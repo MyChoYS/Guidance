@@ -10,3 +10,10 @@
 * jQuery
 * Django
 * SQLite
+
+
+
+gsadfsadf
+
+
+
