@@ -23,5 +23,5 @@ class TestSite(models.Model) :
     courseB = models.CharField(max_length=500, null=True)
     courseC = models.CharField(max_length=500, null=True)
     courseD = models.CharField(max_length=500, null=True)
-    phone_number = models.CharField(max_length=45)
+    phone_number = models.CharField(max_length=45, null=True)
     url = models.CharField(max_length=500, null=True)
