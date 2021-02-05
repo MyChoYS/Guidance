@@ -10,5 +10,5 @@ class Academy_review(models.Model):
 class TestSite_review(models.Model):
     password = models.CharField(max_length=8)
     content = models.CharField(max_length=500)
-    academy_id = models.ForeignKey(TestSite, on_delete=models.CASCADE)
+    testsite_id = models.ForeignKey(TestSite, on_delete=models.CASCADE)
 
