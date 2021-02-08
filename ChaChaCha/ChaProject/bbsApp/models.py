@@ -14,4 +14,3 @@ class TestSite_review(models.Model):
     content = models.CharField(max_length=500)
     writedate = models.DateField(auto_now_add=True)
     testsite_id = models.ForeignKey(TestSite, on_delete=models.CASCADE)
-

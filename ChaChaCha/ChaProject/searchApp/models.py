@@ -21,7 +21,6 @@ class Academy_town(models.Model) :
     city_name = models.CharField(max_length=45)
 
 
-
 class TestSite(models.Model) :
     name = models.CharField(max_length=45)
     address_full = models.CharField(max_length=45)
