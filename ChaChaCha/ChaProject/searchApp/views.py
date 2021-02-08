@@ -46,10 +46,11 @@ def services2(request) :
 
 # 내 주변 시험장 검색 (맵)
 def services3(request) :
-    mylocation = Academy.objects.all()
+    mylocation = TestSite.objects.all()
     context = {
-        'Academy':mylocation,
+        'TestSite':mylocation,
     }
+
     return render(request, 'services3.html', context)
 
     ## thisUserMoments = mymoment.objects.filter(user=randomuserid, score__gte=4).order_by('-momentcreatedate', '-score')[0:4]
