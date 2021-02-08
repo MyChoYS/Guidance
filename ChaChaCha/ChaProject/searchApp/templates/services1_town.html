@@ -11,26 +11,29 @@
  <main class="" id="main-collapse">
     <section class="search-sec">
         <div class="container">
+            <form action="{% url 'services1' %}" method="post" novalidate="novalidate">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                <select onchange="if(this.value) location.href=(this.value)" class="form-control search-slt" id="exampleFormControlSelect">
-                                    <option>지역</option>
-                                    <option onchange="location.href ={% url 'services1' %}">서울</option>
-                                    <option onchange="location.href ={% url 'services1' %}">경기</option>
-                                    <option onchange="location.href ={% url 'services1' %}">인천</option>
+                                <select onchange="if(this.value) location.href=(this.value);" class="form-control search-slt" id="exampleFormControlSelect">
+                                    <option>{{dosi}}</option>
                                 </select>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                <select onchange="if(this.value) location.href=(this.value)" class="form-control search-slt" id="exampleFormControlSelect2">
-                                    <option>시/군/구</option>
+                                 <select onchange="if(this.value) location.href=(this.value)" class="form-control search-slt" id="exampleFormControlSelect2">
+                                    <option>{{gugun}}</option>
                                 </select>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                <select onchange="if(this.value) location.href=(this.value)" class="form-control search-slt" id="exampleFormControlSelect3">
                                     <option>학원명</option>
+                                    {% for sido in sidos %}
+                                     {% if sido.address_town == gugun %}
+                                     <option onchange="location.href ={% url 'services1' %}">{{sido.name}}</option>
+                                     {% endif %}
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 p-0">
@@ -40,6 +43,7 @@
                         </div>
                     </div>
                 </div>
+            </form>
         </div>
         </section>
 <hr>
@@ -49,5 +53,4 @@
     alert("위치정보를 입력해주세요")
     }
 </script>
-
 {% endblock %}

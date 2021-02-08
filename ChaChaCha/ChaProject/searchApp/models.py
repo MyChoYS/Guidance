@@ -16,6 +16,12 @@ class Academy(models.Model) :
                                                            self.address_town, self.fee1, self.fee2, self.bus, self.url,
                                                            self.phone_number)
 
+class Academy_town(models.Model) :
+    town_name = models.CharField(max_length=45)
+    city_name = models.CharField(max_length=45)
+
+
+
 class TestSite(models.Model) :
     name = models.CharField(max_length=45)
     address_full = models.CharField(max_length=45)
