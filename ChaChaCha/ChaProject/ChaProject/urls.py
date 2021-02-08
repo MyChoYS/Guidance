@@ -24,4 +24,5 @@ urlpatterns = [
     path('basicApp/', include('basicApp.urls')),
     path('searchApp/', include('searchApp.urls')),
     path('bbsApp/', include('bbsApp.urls')),
+
 ]
