@@ -1,30 +1,66 @@
 {% extends 'base.html' %}
 
 {% block headcontent %}
-<title>geolocation으로 마커 표시하기</title>
+<title>내 주변 시험장</title>
 {% endblock %}
 
 {% block content %}
 {% load static %}
 
+<style>
+    table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-top: 22px;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+    table {
+            table-layout: fixed;
+            width: 100%;
+            }
+    .fontsize {
+              font-size: 15px;
+                }
+    .fontsize>a { color: blue;
+                }
+</style>
+
 <main class="" id="main-collapse">
   <div class="row">
     <div class="col-xs-12 col-md-6">
         <p style="margin-top:-12px">
-            <b>Chrome 브라우저는 https 환경에서만 geolocation을 지원합니다.</b> 참고해주세요.
+            <b>별표를 클릭하시면 학원과 코스 정보가 표시됩니다.</b>
         </p>
         <div id="map" style="width:600px;height:900px;"></div>
     </div>
+
+  <div class="col-xs-12 col-md-6">
+
+            <table>
+                <tr><td width="20%">시험장 이름</td><td id = 'name' class = 'fontsize'></td></tr>
+                <tr><td width="20%">시험장 위치</td><td id = 'location' class = 'fontsize'></td></tr>
+                <tr><td width="25%">홈페이지</td><td id = 'url' class = 'fontsize'></td></tr>
+            </table>
+
+        <div style="width:600px;height:778px;">
+            <img style="width:100%;height:100%;" src="..\image\default.jpg"/>
+        </div>
   </div>
+
+  </div>
+
 </main>
 
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1cc2187c8717ffab77eb12ceab5806ae"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1cc2187c8717ffab77eb12ceab5806ae&libraries=services"></script>
 <script>
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 10 // 지도의 확대 레벨
+            level: 8 // 지도의 확대 레벨
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -39,7 +75,7 @@
                 lon = position.coords.longitude; // 경도
 
             var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+                message = '<div style="padding:5px;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
 
             // 마커와 인포윈도우를 표시합니다
             displayMarker(locPosition, message);
@@ -53,6 +89,64 @@
 
         displayMarker(locPosition, message);
     }
+
+var geocoder = new kakao.maps.services.Geocoder();
+var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(24, 35);
+
+    // 마커 이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+    {% for location in Academy %}
+    geocoder.addressSearch('{{location.address_full}}', function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+        var marker = new kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: coords,
+            title : '{{location.name}}', // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image : markerImage // 마커 이미지
+            });
+             // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+                             content: '<div>{{location.name}}</div>'// 인포윈도우에 표시할 내용
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+    kakao.maps.event.addListener(marker, 'click', clickevent('{{location.name}}','{{location.address_full}}','{{location.url}}'));
+    }
+    });
+    {% endfor %}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+function clickevent(name, address, url) {
+    return function(){
+        document.getElementById('name').innerText = name
+        document.getElementById('location').innerText = address
+        document.getElementById('url').innerHTML = `<a href = '${url}' target='_blank'> 홈페이지 이동 </a>`
+        };
+    }
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+
 
     // 지도에 마커와 인포윈도우를 표시하는 함수입니다
     function displayMarker(locPosition, message) {
@@ -78,5 +172,6 @@
         // 지도 중심좌표를 접속위치로 변경합니다
         map.setCenter(locPosition);
     }
+
 </script>
 {% endblock %}
