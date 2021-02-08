@@ -82,6 +82,7 @@
                         console.log(result);
                     }
                 };
+
                 geocoder.addressSearch('{{sido.address_full}}',function(result, status) {
 
                     // 정상적으로 검색이 완료됐으면
@@ -94,7 +95,6 @@
                             map: map,
                             position: coords
                         });
-
                         // 인포윈도우로 장소에 대한 설명을 표시합니다
                         var infowindow = new kakao.maps.InfoWindow({
                             content: '<div style="width:150px;text-align:center;padding:6px 0;">{{sido.name}} 운전전문학원</div>'
@@ -105,7 +105,7 @@
                         map.setCenter(coords);
                     }
                 });
-                                var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
                                     mapOption = {
                                         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
                                         level: 3 // 지도의 확대 레벨
