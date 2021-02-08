@@ -59,12 +59,16 @@
 		<a href='?page={{testsiteReview.number|add:+1}}'>다음페이지</a>
 	{% endif %}
   </h5>
+  <div class="create_btn"><button onclick="create_review()">글 작성하기</button></div>
 </main>
 <script>
   function testsiteDelete(pk){
     let result = confirm("정말로 삭제하겠습니까??");
     if(result)
       location.href = "{% url 'delete_testsite' %}?pk="+pk;
+  }
+  function create_review(){
+    location.href = "{% url 'create_testsite_review' %}";
   }
 
 
