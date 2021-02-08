@@ -5,6 +5,27 @@
 {% endblock %}
 {% block content %}
 {% load static %}
+<style>
+    table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-top: 22px;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+    table {
+            table-layout: fixed;
+            width: 200%;
+            text-align : auto;
+            }
+    .fontsize {
+              font-size: 15px;
+                }
+    .fontsize>a { color: blue;
+                }
+</style>
 <br>
 <br>
 <br>
@@ -41,7 +62,17 @@
         </div>
         </section>
 <hr>
+     {% for sido in sidos %}
+     {% if sido.name == academy and sido.address_city == dosi and sido.address_town == gugun %}
+    <div class="col-xs-12 col-md-6">
+            <table border="1">
+                <tr><th>학원명</th><th>주소</th><th>수강료(1종)</th><th>수강료(2종)</th><th>셔틀버스</th><th>전화번호</th><th>사이트URL</tr>
+                <tr><td>{{academy}}</td><td>{{sido.address_full}}</td><td>{{sido.fee1}}원</td><td>{{sido.fee2}}원</td><td><a href="{{sido.bus}}">바로가기</a></td><td>{{sido.phone_number}}</td><td><a href="{{sido.url}}">바로가기</a></td></tr>
+            </table>
+    </div>
     <!-- 테이블 만들기 -->
+     {% endif %}
+     {% endfor %}
 
 </main>
 {% endblock %}
