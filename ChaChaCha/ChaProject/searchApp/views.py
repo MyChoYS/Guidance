@@ -42,7 +42,11 @@ def services1_search(request,city,town,name): #학원내용 출력
 
 # 내 주변 학원 검색 (맵)
 def services2(request) :
-    return render(request, 'services2.html', None)
+    mylocation = Academy.objects.all()
+    context = {
+        'Academy':mylocation,
+    }
+    return render(request, 'services2.html', context)
 
 # 내 주변 시험장 검색 (맵)
 def services3(request) :
