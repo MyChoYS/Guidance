@@ -39,7 +39,6 @@ def services1_search(request,city,town,name): #학원내용 출력
     context = {"sidos": sidos, 'method': 'get', 'dosi': dosi, 'gugun': town,'academy':name}
     return render(request, 'services1_search.html', context)
 
-
 # 내 주변 학원 검색 (맵)
 def services2(request) :
     return render(request, 'services2.html', None)
