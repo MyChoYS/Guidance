@@ -54,7 +54,6 @@ def services3(request) :
     context = {
         'TestSite':mylocation,
     }
-
     return render(request, 'services3.html', context)
 
     ## thisUserMoments = mymoment.objects.filter(user=randomuserid, score__gte=4).order_by('-momentcreatedate', '-score')[0:4]
