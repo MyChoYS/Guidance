@@ -1,58 +1,166 @@
-<!-- 지도 테스트 코드 -->
 {% extends 'base.html' %}
 
 {% block headcontent %}
-<title>geolocation으로 마커 표시하기</title>
+<title>내 주변 학원</title>
 {% endblock %}
 
 {% block content %}
 {% load static %}
 
+<style>
+    table, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-top: 22px;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+    table {
+            table-layout: fixed;
+            width: 100%;
+            background-color : #bbdefb;
+            }
+    .fontsize {
+              font-size: 15px;
+                }
+    .fontsize>a { color: blue;
+                }
+
+    .customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+    .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+    .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+    .customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
+    .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+</style>
+
 <main class="" id="main-collapse">
   <div class="row">
     <div class="col-xs-12 col-md-6">
         <p style="margin-top:-12px">
-            <b>Chrome 브라우저는 https 환경에서만 geolocation을 지원합니다.</b> 참고해주세요.
+            <b>학원 정보가 표시됩니다.</b>
         </p>
-        <div id="map" style="width:600px;height:900px;"></div>
+        <div id="map" style="width:600px;height:600px;"></div>
     </div>
+
+  <div class="col-xs-12 col-md-6">
+            <table>
+                <tr><td width="20%">학원명</td><td id = 'name'  class = 'fontsize'></td></tr>
+                <tr><td width="20%">위치</td><td id = 'location' class = 'fontsize'></td></tr>
+                <tr><td width="5%">1종 보통 수강료</td><td id = 'fee1' class = 'fontsize'></td></tr>
+                <tr><td width="5%">2종 자동 수강료</td><td id = 'fee2' class = 'fontsize'></td></tr>
+                <tr><td width="25%">홈페이지</td><td id = 'url'></td></tr>
+                <tr><td width="25%">셔틀버스</td><td id = 'bus'></td></tr>
+                <tr><td width="25%">전화번호</td><td id = 'phone_number' class = 'fontsize'></td></tr>
+            </table>
   </div>
+  </div>
+
 </main>
 
-
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1cc2187c8717ffab77eb12ceab5806ae"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1cc2187c8717ffab77eb12ceab5806ae&libraries=services"></script>
 <script>
+
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 10 // 지도의 확대 레벨
+            level: 7 // 지도의 확대 레벨
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
     if (navigator.geolocation) {
-
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         navigator.geolocation.getCurrentPosition(function(position) {
-
             var lat = position.coords.latitude, // 위도
                 lon = position.coords.longitude; // 경도
-
             var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+                message = '<div style="padding:5px;">현 위치</div>'; // 인포윈도우에 표시될 내용입니다
 
             // 마커와 인포윈도우를 표시합니다
             displayMarker(locPosition, message);
-
         });
 
     } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
 
         var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
             message = 'geolocation을 사용할수 없어요..'
+
         displayMarker(locPosition, message);
     }
+
+var geocoder = new kakao.maps.services.Geocoder();
+
+    // 이미지 변경
+    var imageSrc = "/static/images/academymarker.png";
+
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(60, 70);
+
+    // 마커 이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    {% for location in Academy %}
+    geocoder.addressSearch('{{location.address_full}}', function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+        var marker = new kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: coords,
+            title : '{{location.name}}', // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image : markerImage // 마커 이미지
+            });
+
+        // 커스텀 오버레이에 표출될 내용을 설정합니다.
+        var content = '<div class="customoverlay">' +
+        '  <a href="{{location.url}}" target="_blank">' +
+        '    <span class="title">{{location.name}} 운전전문학원</span>' +
+        '  </a>' +
+        '</div>';
+
+        // 커스텀 오버레이의 위치를 설정합니다
+        var position = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 커스텀 오버레이를 생성합니다
+        var customOverlay = new kakao.maps.CustomOverlay({
+            map: map,
+            position: position,
+            content: content,
+            yAnchor: 1
+            });
+
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+    kakao.maps.event.addListener(marker, 'click', clickevent('{{location.name}}','{{location.address_full}}','{{location.fee1}}','{{location.fee2}}','{{location.url}}','{{location.bus}}','{{location.phone_number}}'));
+    }
+    });
+
+    {% endfor %}
+
+
+
+// 클릭이벤트 수행시 학원명, 주소, 가격, 셔틀, 전화번호를 가져오고 출력.
+function clickevent(name, address, fee1, fee2, url, bus, phone_number) {
+    return function(){
+        document.getElementById('name').innerText = name
+        document.getElementById('location').innerText = address
+        document.getElementById('fee1').innerText = fee1
+        document.getElementById('fee2').innerText = fee2
+        document.getElementById('url').innerHTML = ` <a href = '${url}'><img src="{% static 'images/homepage.png' %}" width="20px" height="20px"></a>`
+        document.getElementById('bus').innerHTML = ` <a href = '${bus}'><img src="{% static 'images/shuttle.png' %}" width="30px"></a>`
+        document.getElementById('phone_number').innerText = phone_number
+        };
+    }
+
+
 
     // 지도에 마커와 인포윈도우를 표시하는 함수입니다
     function displayMarker(locPosition, message) {
@@ -63,20 +171,12 @@
             position: locPosition
         });
 
-        var iwContent = message, // 인포윈도우에 표시할 내용
-            iwRemoveable = true;
-
-        // 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content : iwContent,
-            removable : iwRemoveable
-        });
-
-        // 인포윈도우를 마커위에 표시합니다
-        infowindow.open(map, marker);
-
         // 지도 중심좌표를 접속위치로 변경합니다
         map.setCenter(locPosition);
     }
+
 </script>
+
+<img style="width:100%;height:200px" src="{% static 'images/road.png' %}">
+
 {% endblock %}
