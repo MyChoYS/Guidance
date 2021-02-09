@@ -9,7 +9,6 @@ from django.http import HttpResponse
 from django.template import loader
 
 # 처음 리뷰 게시판 들어갔을 때, academy 정보 먼저 보여줌
-
 def review(request) :
     page = request.GET.get('page', 1)
 
@@ -20,6 +19,7 @@ def review(request) :
     context = {"academyReview": reviewlistpage}
     return render(request, 'review.html', context)
 
+# 학원 리뷰 보기
 def review_academy(request):
     page = request.GET.get('page', 1)
 
@@ -30,7 +30,7 @@ def review_academy(request):
     context = {"academyReview": reviewlistpage}
     return render(request, 'review_academy.html', context)
 
-
+# 시험장 리뷰 보기
 def review_testsite(request):
     page = request.GET.get('page', 1)
 
@@ -41,6 +41,35 @@ def review_testsite(request):
     context = {"testsiteReview": reviewlistpage}
     return render(request, 'review_testsite.html', context)
 
+# 학원 리뷰 수정
+def update_academy(request):
+    if request.method == "GET":
+        pk = request.GET['pk']
+        review = Academy_review.objects.get(pk=pk)
+        context = {"review": review}
+        return render(request, 'update_academy.html', context)
+    else:
+        pk = request.GET['pk']
+        review = Academy_review.objects.get(pk=pk)
+        review.title = request.POST['title']
+        review.content = request.POST['content']
+        academy_name = request.POST['a_name']
+        academy_id = Academy.objects.get(name=academy_name)
+        review.academy_id = academy_id
+        review.save()
+        return redirect("review_academy")
+
+# 학원 리뷰 수정
+def update_testsite(request):
+    pk = request.GET['pk']
+    review = Academy_review.objects.get(pk=pk)
+    if request.method == "GET":
+        return render()
+    else:
+        review.title = request.POST['title']
+        review.content = request.POST['content']
+        review.save()
+        return redirect("review_testsite")
 
 # 학원 리뷰 삭제
 def delete_academy(request):
@@ -58,33 +87,39 @@ def delete_testsite(request):
     delete_object.delete()
     return redirect("review_testsite")
 
-def create_academy_review(request):
+# 학원 리뷰 작성
+def create_academy(request):
     if request.method == "POST":
         title = request.POST['title']
         password = request.POST['password']
         content = request.POST['content']
-        academy_id = request.POST['academy_id']
-        data = Academy(title=title, password=password, content=content, academy_id=academy_id)
+        academy_name = request.POST['a_name']
+        academy_id = Academy.objects.get(name=academy_name)
+        data = Academy_review(title=title, password=password, content=content, academy_id=academy_id)
         data.save()
+
         return redirect("review_academy")
     else:
         context = {"flag":1}
-        return render(request, 'create_academy_review.html', context)
+        return render(request, 'create_academy.html', context)
 
-def create_testsite_review(request):
+# 시험장 리뷰 작성
+def create_testsite(request):
     if request.method == "POST":
         title = request.POST['title']
         password = request.POST['password']
         content = request.POST['content']
-        testsite_id = request.POST['testsite_id']
-        data = TestSite(title=title, password=password, content=content, testsite_id=testsite_id)
+        testsite_name = request.POST['t_name']
+        testsite_id = TestSite.objects.get(name=testsite_name)
+        data = TestSite_review(title=title, password=password, content=content, testsite_id=testsite_id)
         data.save()
-        return redirect("review_academy")
+        return redirect("review_testsite")
 
     else:
         context = {"flag": 1}
-        return render(request, 'create_testsite_review.html', context)
+        return render(request, 'create_testsite.html', context)
 
+# 학원 시군구
 def get_academy_town(request):
     value = request.GET['value']
     academy = Academy_town.objects.all()
@@ -95,6 +130,7 @@ def get_academy_town(request):
 
     return JsonResponse({"townList": townList})
 
+# 학원 이름
 def get_academy_name(request):
     value = request.GET['value']
     academy = Academy.objects.all()
@@ -104,9 +140,11 @@ def get_academy_name(request):
             nameList.append(a.name)
     return JsonResponse({"nameList": nameList})
 
+# 시험장 이름
 def get_testsite_name(request):
     testsite = TestSite.objects.all()
     nameList = []
     for t in testsite:
         nameList.append(t.name)
     return JsonResponse({"nameList": nameList})
+
