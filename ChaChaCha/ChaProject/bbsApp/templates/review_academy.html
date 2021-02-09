@@ -41,6 +41,7 @@
         <td> {{ review.academy_id.address_city }} </td>
         <td> {{ review.academy_id.address_town }} </td>
         <td> {{ review.writedate }} </td>
+        <td><button onclick="academyUpdate('{{ review.pk }}')">수정하기</button></td>
         <td><button onclick="academyDelete('{{ review.pk }}')">삭제하기</button></td>
       </tr>
       {% endfor %}
@@ -61,19 +62,25 @@
 	{% if academyReview.has_next %}
 		<a href='?page={{academyReview.number|add:+1}}'>다음페이지</a>
 	{% endif %}
-
   </h5>
   <div class="create_btn"><button  onclick="create_review()">글 작성하기</button></div>
 </main>
 <script>
+
+  function academyUpdate(pk){
+    let result = confirm("수정하시겠습니까?");
+    if(result)
+      location.href = "{% url 'update_academy' %}?pk="+pk;
+  }
 
   function academyDelete(pk){
     let result = confirm("정말로 삭제하겠습니까??");
     if(result)
       location.href = "{% url 'delete_academy' %}?pk="+pk;
   }
+
   function create_review(){
-    location.href = "{% url 'create_academy_review' %}";
+    location.href = "{% url 'create_academy' %}";
   }
 
 </script>
