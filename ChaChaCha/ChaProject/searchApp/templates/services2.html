@@ -7,25 +7,54 @@
 {% load static %}
 
 <style>
-    table, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding-left: 5px;
-            padding-right: 5px;
-            margin-top: 20px;
-            font-size: 15x;
-            margin-bottom: 15px;
-        }
+    h3, h6 {
+        text-align : center;
+    }
+    .academytable{
+        min-width : 800px;
+    }
+
+    .pricetable{
+        min-width : 300px;
+    }
+
     table {
-            table-layout: fixed;
-            width: 100%;
-            background-color : #bbdefb;
-            }
-    .fontsize {
-              font-size: 15px;
-                }
-    .fontsize>a { color: blue;
-                }
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+
+    table th,
+    table td {
+        padding: 12px 15px;
+}
+
+    table tbody tr {
+        border-bottom: 1px solid #dddddd;
+}
+
+    table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+}
+
+    table tbody tr:last-of-type {
+        border-bottom: 2px solid #FFC600;
+}
+
+    .wrap_button {position:absolute;left:15px;top:12px;z-index:2}
+    .btn_comm {float:left;display:block;width:70px;height:27px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/sample_button_control.png) no-repeat}
+    .btn_resetMap {background-position:-69px 0;}
 
     .customoverlay {position:relative;bottom:60px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
     .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
@@ -34,30 +63,45 @@
     .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 
 
-
 </style>
 
 <main class="" id="main-collapse">
   <div class="row">
     <div class="col-xs-12 col-md-6">
-        <img id = 'searchbar' src="{% static 'images/searchbar.png' %}" style="width:60%">
-        자동차를 클릭하시면, 수강료 / 전화번호 / 셔틀버스 정보를 확인할 수 있습니다.
-        <div id="map" style="height:695px;"></div>
+        <div class = "wrap_content">
+            <div id="map" style="height:695px;"></div> <!-- 지도표시 div -->
+            <div class="wrap_button">
+            <a href="javascript:;" class="btn_comm btn_resetMap" onclick="resetKakaoMap()"></a> <!-- 지도 초기화 버튼입니다 -->
+            </div>
+        </div>
+        <h3>&#128661 내 위치 기준의 주변학원입니다 &#128661</h3>
+        <hr>
+        <h6>마커를 클릭하시면 학원정보 & 수강료 정보를 확인할 수 있습니다.</h6>
     </div>
-
 
   <div class="col-xs-12 col-md-6">
-            <table>
-                <tr><td width="20%">학원명</td><td id = 'name'  class = 'fontsize'></td></tr>
-                <tr><td width="20%">위치</td><td id = 'location' class = 'fontsize'></td></tr>
-                <tr><td width="5%">1종 보통 수강료</td><td id = 'fee1' class = 'fontsize'></td></tr>
-                <tr><td width="5%">2종 자동 수강료</td><td id = 'fee2' class = 'fontsize'></td></tr>
-                <tr><td width="25%">전화번호</td><td id = 'phone_number' class = 'fontsize'></td></tr>
-                <tr><td width="25%">셔틀버스</td><td id = 'bus'></td></tr>
-            </table>
-    <div>
-        클릭한 학원에 따라 후기 게시판으로?
-    </div>
+      <h3> &#9989 학원정보 &#9989 </h3> <hr>
+         <table class = "infotable">
+          <tr><td width="20%"><b>학원명</b></td><td id = 'name'  class = 'fontsize'></td><td></td><td></td></tr>
+          <tr><td width="20%"><b>위치</b></td><td id = 'location' class = 'fontsize'></td><td></td><td></td></tr>
+          <tr><td width="20%"><b>전화번호</b></td><td id = 'phone_number' class = 'fontsize'></td><td width="20%"><b>셔틀버스</b></td><td id = 'bus'></td></tr>
+         </table>
+      <br>
+
+      <div>
+          <h3> &#128176 수강료  &#128176 </h3> <hr>
+          <table class = "pricetable">
+                <tr><td width="20%"><b>1종 보통</b></td><td id = 'fee1' class = 'fontsize'></td></tr>
+                <tr><td width="20%"><b>2종 자동</b></td><td id = 'fee2' class = 'fontsize'></td></tr>
+          </table>
+          <h6>수강료는 기능 검정료, 주행 검정료를 제외한 기본 수강료(학과 교육, 기능 교육, 주행교육) 기준입니다. (부가세 포함) <br>
+              (※ 2021년 1월 기준)</h6>
+
+      </div>
+
+      <div>
+        <!-- 후기게시판 -->
+      </div>
 
   </div>
 
@@ -68,8 +112,9 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1cc2187c8717ffab77eb12ceab5806ae&libraries=services"></script>
 <script>
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapCenter = new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심 좌표
         mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            center: mapCenter,
             minLevel: 3, // 최소 레벨
             maxLevel : 8, // 최대 레벨
             level: 8 // 지도의 확대 레벨
@@ -108,7 +153,7 @@
 
     var geocoder = new kakao.maps.services.Geocoder();
 
-    // 이미지 변경
+    // 마커 이미지 변경
     var imageSrc = "/static/images/academymarker.png";
 
 
@@ -152,7 +197,6 @@
             });
 
     // 이벤트 리스너
-    // 중심 좌표 바뀌었을 때 현 위치로 되돌아오는 kakao.maps.event.addListener(map,'center_changed',function(){}
     kakao.maps.event.addListener(marker, 'click', clickevent('{{location.name}}','{{location.address_full}}','{{location.fee1}}','{{location.fee2}}','{{location.phone_number}}','{{location.bus}}'));
     }
     });
@@ -161,16 +205,35 @@
 
 
 // 클릭이벤트 수행시 학원명, 주소, 가격, 셔틀, 전화번호를 가져오고 출력
-// 수정해야할 부분 : 버스 null인 경우, fee1 fee2 null 인 경우 (전화문의로 통일되어 출력되도록 )
 
 function clickevent(name, address, fee1, fee2, phone_number, bus) {
     return function(){
-        document.getElementById('name').innerText = name + " 운전 전문학원"
-        document.getElementById('location').innerText = address
-        document.getElementById('fee1').innerText = fee1 + "원"
-        document.getElementById('fee2').innerText = fee2 + "원"
-        document.getElementById('phone_number').innerHTML = `<a href = "tel:${phone_number}">${phone_number}</a>`
-        document.getElementById('bus').innerHTML = `<a href = '${bus}'><img src="{% static 'images/shuttle.png' %}" width="30px"></a>`
+        document.getElementById('name').innerText = name + " 운전전문학원";
+        document.getElementById('location').innerText = address;
+
+        if (fee1 == ''){
+            document.getElementById('fee1').innerText = "전화 문의";
+        }
+        else{
+            document.getElementById('fee1').innerText = fee1.toString().slice(0,2) + "만 " + fee1.toString().slice(2,3) + "천원";
+        }
+
+        if (fee2 == ''){
+            document.getElementById('fee2').innerText = "전화 문의";
+        }
+        else{
+            document.getElementById('fee2').innerText = fee2.toString().slice(0,2) + "만 " + fee2.toString().slice(2,3) + "천원";
+        }
+
+        document.getElementById('phone_number').innerHTML = `<a href = "tel:${phone_number}" style="color:purple">${phone_number}</a>`
+
+        if (bus == ''){
+            document.getElementById('bus').innerText = "전화 문의";
+        }
+        else{
+            document.getElementById('bus').innerHTML = `<a href = '${bus}'><img src="{% static 'images/shuttle.png' %}" width="30px"></a>`
+        }
+
         };
     }
 
@@ -201,10 +264,28 @@ function clickevent(name, address, fee1, fee2, phone_number, bus) {
         map.relayout();
 }
 
-    // 지도 초기화 이벤트 핸들러 추가? (수정중)
+
+//지도 초기화 이벤트 핸들러
 function resetKakaoMap(){
-    map.setCenter(mapCenter); //지도를 초기화 했던 값으로 다시 셋팅합니다.
-    map.setLevel(mapOption.level);
+    if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude, // 위도
+                lon = position.coords.longitude; // 경도
+            var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                message = '<div style="padding:5px;">현 위치</div>'; // 인포윈도우에 표시될 내용입니다
+
+            // 마커와 인포윈도우를 표시합니다
+            displayMarker(locPosition, message);
+        });
+
+    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
+            message = 'geolocation을 사용할 수 없습니다.'
+
+        displayMarker(locPosition, message);
+    }
 }
 
 </script>
