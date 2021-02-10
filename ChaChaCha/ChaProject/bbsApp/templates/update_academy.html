@@ -15,12 +15,12 @@
   <div class="row">
     <div class="col-xs-8 section-container-spacer">
       <h1>Create Review</h1>
-      <p>학원 리뷰를 남겨 봅시다!</p>
+      <p>학원 리뷰를 수정해 봅시다!</p>
       <hr>
     </div>
   </div>
 
-  <form method="POST" action="{% url 'update_academy' %}">
+  <form method="POST" action="{% url 'update_academy2' review.pk %}" >
     {% csrf_token %}
       <div class="col-lg-3 col-md-3 col-sm-12 p-0">
         <select id="a_city" class="form-control" onchange="getTown(this.value)" name="a_city" required>
@@ -49,6 +49,9 @@
       <textarea id="InputContent" class="form-control" rows="3" name="content" placeholder="content" required>{{ review.content }}</textarea><br>
       <label for="InputPassword">비밀번호</label>
       <input type="password" class="form-control" id="InputPassword" name="password" placeholder="password" required><br>
+      {% if msg %}
+      <div class="alert alert-danger" role="alert">{{ msg }}</div>
+      {% endif %}
       <br>
       <button type="submit" value="Submit">수정완료</button>
       <button type="reset" value="Reset">재작성</button>
@@ -57,40 +60,55 @@
 {% endif %}
 
 <script>
+
   $(document).ready(function() {
-    $('#a_city').val("{{ review.academy_id.address_city }}").trigger('change');
-    getTown("{{review.academy_id.address_city}}");
-    $('#a_town').val("{{ review.academy_id.address_town }}").trigger('change');
-    getName("{{review.academy_id.address_town }}");
-    $('#a_name').val("{{ review.academy_id.name }}").trigger('change');
+
+    $('#a_city').val("{{ review.academy_id.address_city }}").prop("selected", true);
+    console.log("1");
+
+    $.getJSON("{% url 'get_academy_town' %}?value={{ review.academy_id.address_city }}", function(jsonObj){
+      if(jsonObj.length!=0){
+        for(let i in jsonObj.townList)
+          $('#a_town').append("<option value="+ jsonObj.townList[i] +">"+ jsonObj.townList[i] + "</option>");
+        $('#a_town').val("{{ review.academy_id.address_town }}").prop("selected", true);
+        console.log("2");
+      }
+    });
+
+    $.getJSON("{% url 'get_academy_name' %}?value={{ review.academy_id.address_town }}", function(jsonObj){
+      if(jsonObj.length!=0){
+        for(let i in jsonObj.nameList)
+           $('#a_name').append("<option value="+ jsonObj.nameList[i] +">"+ jsonObj.nameList[i] + "</option>");
+        $('#a_name').val("{{ review.academy_id.name }}").prop("selected", true);
+        console.log("3");
+      }
+    });
+
   });
 
   function getTown(city){
     var target = $('#a_town');
-    if(city=="none"){
-      return;
-    }
 
     $.getJSON("{% url 'get_academy_town' %}?value="+city, function(jsonObj){
       if(jsonObj.length!=0){
         for(let i in jsonObj.townList)
           target.append("<option value="+ jsonObj.townList[i] +">"+ jsonObj.townList[i] + "</option>");
+        console.log("4");
       }
     });
   }
 
   function getName(town){
     var target = $('#a_name');
-    if(town=="none"){
-      return;
-    }
 
     $.getJSON("{% url 'get_academy_name' %}?value="+town, function(jsonObj){
       if(jsonObj.length!=0){
         for(let i in jsonObj.nameList)
           target.append("<option value="+ jsonObj.nameList[i] +">"+ jsonObj.nameList[i] + "</option>");
+        console.log("5");
       }
     });
   }
+
 </script>
 {% endblock %}

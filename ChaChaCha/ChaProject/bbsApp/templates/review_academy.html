@@ -4,7 +4,6 @@
 <title>Title page</title>
 {% endblock %}
 {% block css %}
-
 {% endblock %}
 {% block content %}
 {% load static %}
@@ -19,30 +18,29 @@
       <hr>
     </div>
   </div>
-  <div class="col-xs-12 col-md-1 section-container-spacer">
-    <a href="{% url 'review_academy' %}" id="academy" class="btn btn-primary" title=""> 학원 </a>
+  <div class="row">
+    <div class="col-xs-8 section-container-spacer">
+      <a href="{% url 'review_academy' %}" id="academy" class="btn btn-primary" title=""> 학원 </a>
+      <a href="{% url 'review_testsite' %}" id="testsite" class="btn btn-default" title=""> 시험장 </a>
+    </div>
   </div>
-  <div class="col-xs-12 col-md-1 section-container-spacer">
-    <a href="{% url 'review_testsite' %}" id="testsite" class="btn btn-default" title=""> 시험장 </a>
-  </div>
-
   {% if academyReview %}
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>제목</th><th>학원 이름</th><th>시/도</th><th>시/구/군</th><th>작성일</th><th></th>
+        <th>제목</th><th>학원 이름</th><th>시/도</th><th>시/구/군</th><th>작성일</th><th>수정하기</th><th>삭제하기</th>
       </tr>
     </thead>
     <tbody>
       {% for review in academyReview %}
       <tr>
-        <td> {{ review.title }} </td>
+        <td> <span onclick="readAcademy({{ review.pk }});" style="cursor:pointer; color:red; font-weight: bold">{{ review.title }}</span> </td>
         <td> {{ review.academy_id.name }} </td>
         <td> {{ review.academy_id.address_city }} </td>
         <td> {{ review.academy_id.address_town }} </td>
         <td> {{ review.writedate }} </td>
-        <td><button onclick="academyUpdate('{{ review.pk }}')">수정하기</button></td>
-        <td><button onclick="academyDelete('{{ review.pk }}')">삭제하기</button></td>
+        <td><button onclick="updateAcademy('{{ review.pk }}')">수정하기</button></td>
+        <td><button onclick="deleteAcademy('{{ review.pk }}')">삭제하기</button></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -54,32 +52,43 @@
     <p>아직 내용이 없습니다</p>
   </div>
   {% endif %}
-  <h5>
-	{% if academyReview.has_previous %}
+  <div class="row">
+    <div class="col-xs-12 col-md-4 section-container-spacer">
+    </div>
+    <div class="col-xs-12 col-md-4 section-container-spacer">
+      <h5>
+	  {% if academyReview.has_previous %}
 		<a href='?page={{academyReview.number|add:-1}}'>이전페이지</a>
-	{% endif %}
-	Page {{ academyReview.number }} / {{ academyReview.paginator.num_pages }}
-	{% if academyReview.has_next %}
-		<a href='?page={{academyReview.number|add:+1}}'>다음페이지</a>
-	{% endif %}
-  </h5>
-  <div class="create_btn"><button  onclick="create_review()">글 작성하기</button></div>
+	  {% endif %}
+	    Page {{ academyReview.number }} / {{ academyReview.paginator.num_pages }}
+	  {% if academyReview.has_next %}
+        <a href='?page={{academyReview.number|add:+1}}'>다음페이지</a>
+	  {% endif %}
+      </h5>
+    </div>
+    <div class="col-xs-12 col-md-4 section-container-spacer">
+      <div class="create_btn"><button  onclick="createAcademy()">글 작성하기</button></div>
+    </div>
+  </div>
 </main>
 <script>
-
-  function academyUpdate(pk){
-    let result = confirm("수정하시겠습니까?");
-    if(result)
-      location.href = "{% url 'update_academy' %}?pk="+pk;
+  function readAcademy(pk){
+    location.href = "{% url 'read_academy' %}?pk="+pk;
   }
 
-  function academyDelete(pk){
+  function updateAcademy(pk){
+    let result = confirm("수정하시겠습니까?");
+    if(result)
+      location.href = "{% url 'update_academy1' %}?pk="+pk;
+  }
+
+  function deleteAcademy(pk){
     let result = confirm("정말로 삭제하겠습니까??");
     if(result)
       location.href = "{% url 'delete_academy' %}?pk="+pk;
   }
 
-  function create_review(){
+  function createAcademy(){
     location.href = "{% url 'create_academy' %}";
   }
 
