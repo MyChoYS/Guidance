@@ -30,7 +30,7 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>제목</th><th>학원 이름</th><th>시/도</th><th>시/구/군</th><th>작성일</th><th></th>
+        <th>제목</th><th>학원 이름</th><th>시/도</th><th>시/구/군</th><th>작성일</th><th>수정하기</th><th>삭제하기</th>
       </tr>
     </thead>
     <tbody>
@@ -41,7 +41,8 @@
         <td> {{ review.academy_id.address_city }} </td>
         <td> {{ review.academy_id.address_town }} </td>
         <td> {{ review.writedate }} </td>
-        <td><button onclick="academyDelete('{{ review.pk }}')">삭제하기</button></td>
+        <td><button onclick="updateAcademy('{{ review.pk }}')">수정하기</button></td>
+        <td><button onclick="deleteAcademy('{{ review.pk }}')">삭제하기</button></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -61,19 +62,25 @@
 	{% if academyReview.has_next %}
 		<a href='?page={{academyReview.number|add:+1}}'>다음페이지</a>
 	{% endif %}
-
   </h5>
-  <div class="create_btn"><button  onclick="create_review()">글 작성하기</button></div>
+  <div class="create_btn"><button  onclick="createAcademy()">글 작성하기</button></div>
 </main>
 <script>
 
-  function academyDelete(pk){
+  function updateAcademy(pk){
+    let result = confirm("수정하시겠습니까?");
+    if(result)
+      location.href = "{% url 'update_academy1' %}?pk="+pk;
+  }
+
+  function deleteAcademy(pk){
     let result = confirm("정말로 삭제하겠습니까??");
     if(result)
       location.href = "{% url 'delete_academy' %}?pk="+pk;
   }
-  function create_review(){
-    location.href = "{% url 'create_academy_review' %}";
+
+  function createAcademy(){
+    location.href = "{% url 'create_academy' %}";
   }
 
 </script>

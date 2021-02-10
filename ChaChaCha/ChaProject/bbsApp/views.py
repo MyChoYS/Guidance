@@ -41,16 +41,30 @@ def review_testsite(request):
     context = {"testsiteReview": reviewlistpage}
     return render(request, 'review_testsite.html', context)
 
+def read_academy(request):
+    pk = request.GET['pk']
+    review = Academy_review.objects.get(pk=pk)
+    context = {"review": review}
+    return render(request, 'read_academy.html', context)
+
+def read_testsite(request):
+    pk = request.GET['pk']
+    review = TestSite_review.objects.get(pk=pk)
+    context = {"review": review}
+    return render(request, 'read_testsite.html', context)
+
 # 학원 리뷰 수정
-def update_academy(request):
+def update_academy(request, id=0):
     if request.method == "GET":
         pk = request.GET['pk']
         review = Academy_review.objects.get(pk=pk)
         context = {"review": review}
         return render(request, 'update_academy.html', context)
     else:
-        pk = request.GET['pk']
-        review = Academy_review.objects.get(pk=pk)
+        review = Academy_review.objects.get(pk=id)
+        if review.password != request.POST['password']:
+            context = {"review": review, "msg": "비밀번호가 틀렸습니다"}
+            return render(request, 'update_academy.html', context)
         review.title = request.POST['title']
         review.content = request.POST['content']
         academy_name = request.POST['a_name']
@@ -59,15 +73,23 @@ def update_academy(request):
         review.save()
         return redirect("review_academy")
 
-# 학원 리뷰 수정
-def update_testsite(request):
-    pk = request.GET['pk']
-    review = Academy_review.objects.get(pk=pk)
+# 시험장 리뷰 수정
+def update_testsite(request, id=0):
     if request.method == "GET":
-        return render()
+        pk = request.GET['pk']
+        review = TestSite_review.objects.get(pk=pk)
+        context = {"review": review}
+        return render(request, 'update_testsite.html', context)
     else:
+        review = TestSite_review.objects.get(pk=id)
+        if review.password != request.POST['password']:
+            context = {"review": review, "msg": "비밀번호가 틀렸습니다"}
+            return render(request, 'update_testsite.html', context)
         review.title = request.POST['title']
         review.content = request.POST['content']
+        testsite_name = request.POST['t_name']
+        testsite_id = TestSite.objects.get(name=testsite_name)
+        review.testsite_id = testsite_id
         review.save()
         return redirect("review_testsite")
 
