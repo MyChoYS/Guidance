@@ -9,6 +9,9 @@
 <br>
 <br>
 <style>
+    main > h2 :hover {
+       background-color : #ffffb3;  ;
+    }
 </style>
  <main class="" id="main-collapse">
      <h2><a style="color:black" href= "{% url 'information_0' %}">면허시험 준비물 가이드</a></h2>
@@ -32,7 +35,7 @@
 <div class="contents">
 
 			<h4 style="color:orange" class="tit_type1">시험장별 응시가능 시험</h4>
-			<p class="fc_org">시험장 이름을 클릭하면, 응시일정 바로보기가 가능합니다.</p>
+			<p class="fc_org"></p>
 			<table border="1pt" style="text-align : center" class="data_tbl mgt10 ">
 					<caption>시험장별 응시가능 시험에 관한 내용 입니다</caption>
 					<colgroup>
@@ -56,7 +59,6 @@
 						<tr style="width:1100px">
 							<th scope="col" style="width:110px">제1-2종 보통</th>
 							<th scope="col" style="width:110px">제1종대형</th>
-
 							<th scope="col" style="width:110px">제1종<br/>대형견인차</th>
 							<th scope="col" style="width:110px">제1종<br/>구난차</th>
 							<th scope="col" style="width:110px">제1종<br/>소형견인차</th>
@@ -71,7 +73,6 @@
 							<td><a href="http://dl.koroad.or.kr/PAGE_license/gangnamLic/view.jsp?code=102006"><span class="fc_blue_text underLine">강남</span></a></td>
 							<td><span class="checkO">O</span></td>
 							<td><span class="checkO">O</span></td>
-
 							<td><span class="checkO">O</span></td>
 							<td><span class="checkO">O</span></td>
 							<td><span class="checkO">O</span></td>
@@ -417,11 +418,8 @@
 
 		</div><!-- //contents -->
 	</div><!-- //dBody -->
-
-
-
      <hr>
      <h2><a style="color:black" href= "{% url 'information_6' %}">운전면허의 종류</a></h2>
 <hr>
-
+ </main>
 {% endblock %}
