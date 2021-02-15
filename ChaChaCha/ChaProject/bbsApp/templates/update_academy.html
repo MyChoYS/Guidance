@@ -5,6 +5,13 @@
 {% endblock %}
 
 {% block css %}
+  .b2{
+    border: 0;
+  }
+  .b2:hover{
+    background-color: #ff6360;
+    color : white;
+  }
 {% endblock %}
 
 {% block content %}
@@ -53,8 +60,8 @@
       <div class="alert alert-danger" role="alert">{{ msg }}</div>
       {% endif %}
       <br>
-      <button type="submit" value="Submit">수정완료</button>
-      <button type="reset" value="Reset">재작성</button>
+      <button class="b2" type="submit" value="Submit">수정완료</button>
+      <button class="b2" type="reset" value="Reset">재작성</button>
   </form>
 </main>
 {% endif %}
