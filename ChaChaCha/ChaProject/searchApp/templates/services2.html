@@ -14,7 +14,7 @@
         min-width : 800px;
     }
 
-    .pricetable, reviewtable{
+    .pricetable{
         min-width : 300px;
     }
 
@@ -33,6 +33,7 @@
     color: #ffffff;
     text-align: left;
 }
+
 
     table th,
     table td {
@@ -65,6 +66,13 @@
 </style>
 
 <main class="" id="main-collapse">
+    <div class="row">
+         <div class="col-xs-8 section-container-spacer">
+             <h1>내 주변 학원</h1>
+             <p>내 주변에는 어떤 학원이 있을까?</p>
+             <hr>
+         </div>
+    </div>
   <div class="row">
     <div class="col-xs-12 col-md-6">
         <div class = "wrap_content">
@@ -73,7 +81,7 @@
             <a href="javascript:;" class="btn_comm btn_resetMap" onclick="resetKakaoMap()"></a> <!-- 지도 초기화 버튼입니다 -->
             </div>
         </div>
-        <h3>&#128661 내 위치 기준의 주변학원 &#128661</h3>
+        <h3>&#128661 내 위치 기준의 주변학원입니다 &#128661</h3>
         <hr>
         <h6>마커를 클릭하시면 학원정보 & 수강료 정보를 확인할 수 있습니다.</h6>
     </div>
@@ -93,19 +101,13 @@
                 <tr><td width="20%"><b>1종 보통</b></td><td id = 'fee1' class = 'fontsize'></td></tr>
                 <tr><td width="20%"><b>2종 자동</b></td><td id = 'fee2' class = 'fontsize'></td></tr>
           </table>
-          <h6>수강료는 기능 검정료, 주행 검정료를 제외한 기본 수강료(학과 교육, 기능 교육, 주행교육) 기준입니다. (부가세 포함) <br><br>
+          <h6>수강료는 기능 검정료, 주행 검정료를 제외한 기본 수강료(학과 교육, 기능 교육, 주행교육) 기준입니다. (부가세 포함) <br>
               (※ 2021년 1월 기준)</h6>
-          <br>
+
       </div>
-
-      <!--div>
-        <h3>  &#128204 학원 리뷰  &#128204 </h3> <hr>
-           <table class = "reviewtable">
-                <tr><td width="20%"><b>리뷰 제목</b></td><td>리뷰게시판</td></tr>
-                <tr><td width="20%"><b>리뷰 내용</b></td><td>리뷰게시판</td></tr>
-          </table>
-      </div-->
-
+      <div>
+        <!-- 후기게시판 -->
+      </div>
   </div>
 
   </div>
@@ -157,7 +159,7 @@
     var geocoder = new kakao.maps.services.Geocoder();
 
     // 마커 이미지 변경
-    var imageSrc = "/static/images/academymarker2.png";
+    var imageSrc = "/static/images/academymarker.png";
 
 
     // 마커 이미지의 이미지 크기 입니다

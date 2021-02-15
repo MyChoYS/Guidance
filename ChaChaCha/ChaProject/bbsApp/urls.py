@@ -22,5 +22,4 @@ urlpatterns=[
     path('get_academy_town/', views.get_academy_town, name='get_academy_town'),
     path('get_academy_name/', views.get_academy_name, name='get_academy_name'),
     path('get_testsite_name/', views.get_testsite_name, name='get_testsite_name'),
-
 ]
