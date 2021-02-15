@@ -10,6 +10,11 @@
 <style>
 @import url('https://fonts.googleapis.com/css?family=Nanum+Brush+Script&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR:200,300,400,500,600,700,900&display=swap');
+
+  .wrap_button {position:absolute;left:15px;top:12px;z-index:2}
+  .btn_comm {float:left;display:block;width:70px;height:27px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/sample_button_control.png) no-repeat}
+  .btn_resetMap {background-position:-69px 0;}
+
     table {
         border-collapse: collapse;
         margin: 25px 0;
@@ -149,6 +154,10 @@
             <b>별표를 클릭하시면 학원과 코스 정보가 표시됩니다.</b>
         </p>
         <div id="map" class= "col-12" style="height:790px;"></div>
+        <div class="wrap_button">
+            <br>
+            <a href="javascript:;" class="btn_comm btn_resetMap" onclick="resetKakaoMap()"></a> <!-- 지도 초기화 버튼입니다 -->
+        </div>
     </div>
 
   <div class="col-xs-12 col-md-6">
@@ -356,5 +365,27 @@ function makeOutListener(infowindow) {
         map.setCenter(locPosition);
     }
 
+//지도 초기화 이벤트 핸들러
+function resetKakaoMap(){
+    if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude, // 위도
+                lon = position.coords.longitude; // 경도
+            var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                message = '<div style="padding:5px;">현 위치</div>'; // 인포윈도우에 표시될 내용입니다
+
+            // 마커와 인포윈도우를 표시합니다
+            displayMarker(locPosition, message);
+        });
+
+    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
+            message = 'geolocation을 사용할 수 없습니다.'
+
+        displayMarker(locPosition, message);
+    }
+}
 </script>
 {% endblock %}
