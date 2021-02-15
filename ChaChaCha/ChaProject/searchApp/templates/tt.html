@@ -7,8 +7,10 @@
 {% load static %}
 
 <style>
-
-    .academytable{
+    h3, h6 {
+        text-align : center;
+    }
+    .academytable,reviewtable{
         min-width : 800px;
     }
 
@@ -22,6 +24,8 @@
         font-size: 0.9em;
         font-family: sans-serif;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        margin-left: auto;
+        margin-right: auto;
     }
 
     table thead tr {
@@ -45,7 +49,7 @@
 }
 
     table tbody tr:last-of-type {
-        border-bottom: 2px solid #009879;
+        border-bottom: 2px solid #FFC600;
 }
 
     .wrap_button {position:absolute;left:15px;top:12px;z-index:2}
@@ -62,6 +66,13 @@
 </style>
 
 <main class="" id="main-collapse">
+    <div class="row">
+         <div class="col-xs-8 section-container-spacer">
+             <h1>내 주변 학원</h1>
+             <p>내 주변에는 어떤 학원이 있을까?</p>
+             <hr>
+         </div>
+    </div>
   <div class="row">
     <div class="col-xs-12 col-md-6">
         <div class = "wrap_content">
@@ -70,31 +81,38 @@
             <a href="javascript:;" class="btn_comm btn_resetMap" onclick="resetKakaoMap()"></a> <!-- 지도 초기화 버튼입니다 -->
             </div>
         </div>
-
+        <h3>&#128661 내 위치 기준의 주변학원 &#128661</h3>
+        <hr>
+        <h6>마커를 클릭하시면 학원정보 & 수강료 정보를 확인할 수 있습니다.</h6>
     </div>
 
   <div class="col-xs-12 col-md-6">
-      <span style="">학원 마커를 선택하시면 테이블에 정보가 출력됩니다.</span>
+      <h3> &#9989 학원정보 &#9989 </h3> <hr>
          <table class = "infotable">
           <tr><td width="20%"><b>학원명</b></td><td id = 'name'  class = 'fontsize'></td><td></td><td></td></tr>
           <tr><td width="20%"><b>위치</b></td><td id = 'location' class = 'fontsize'></td><td></td><td></td></tr>
           <tr><td width="20%"><b>전화번호</b></td><td id = 'phone_number' class = 'fontsize'></td><td width="20%"><b>셔틀버스</b></td><td id = 'bus'></td></tr>
          </table>
+      <br>
 
       <div>
-           <span style="">수강료는 기능 검정료, 주행 검정료를 제외한 기본 수강료(학과 교육, 기능 교육, 주행교육) 기준입니다. (부가세 포함)</span>
-          <div> (※ 2021년 1월 기준) </div>
-            <table class = "pricetable">
+          <h3> &#128176 수강료  &#128176 </h3> <hr>
+          <table class = "pricetable">
                 <tr><td width="20%"><b>1종 보통</b></td><td id = 'fee1' class = 'fontsize'></td></tr>
                 <tr><td width="20%"><b>2종 자동</b></td><td id = 'fee2' class = 'fontsize'></td></tr>
-            </table>
+          </table>
+          <h6>기능 검정료, 주행 검정료를 제외한 기본 수강료(학과 교육, 기능 교육, 주행교육) 기준입니다. (부가세 포함) <br>
+              (※ 2021년 1월 기준)</h6>
+          <br>
       </div>
 
       <div>
-        <!-- 후기게시판 -->
+        <h3>  &#128204 학원 리뷰  &#128204 </h3> <hr>
+          <table class = "reviewtable">
+              <tr><td width="20%"><b>제목</b></td><td>{{review.title}}</td></tr>
+              <tr><td width="20%"><b>내용</b></td><td>{{review.content}}</td></tr>
+          </table>
       </div>
-
-  </div>
 
   </div>
 
@@ -187,16 +205,15 @@
             yAnchor: 1
             });
 
-    // 이벤트 리스너
-    kakao.maps.event.addListener(marker, 'click', clickevent('{{location.name}}','{{location.address_full}}','{{location.fee1}}','{{location.fee2}}','{{location.phone_number}}','{{location.bus}}'));
-    }
-    });
 
 
-
-    {% endfor %}
-
-
+        {% for review in academyReview %}
+            {% ifequal review.academy_id.name location.name %}
+                kakao.maps.event.addListener(marker, 'click', clickevent('{{location.name}}','{{location.address_full}}','{{location.fee1}}','{{location.fee2}}','{{location.phone_number}}','{{location.bus}}','{{review.title}}'));
+            {% endifequal %}
+                kakao.maps.event.addListener(marker, 'click', clickevent('{{location.name}}','{{location.address_full}}','{{location.fee1}}','{{location.fee2}}','{{location.phone_number}}','{{location.bus}}'));
+        });
+        {% endfor %}
 
 
 // 클릭이벤트 수행시 학원명, 주소, 가격, 셔틀, 전화번호를 가져오고 출력
@@ -220,7 +237,7 @@ function clickevent(name, address, fee1, fee2, phone_number, bus) {
             document.getElementById('fee2').innerText = fee2.toString().slice(0,2) + "만 " + fee2.toString().slice(2,3) + "천원";
         }
 
-        document.getElementById('phone_number').innerHTML = `<a href = "tel:${phone_number}">${phone_number}</a>`
+        document.getElementById('phone_number').innerHTML = `<a href = "tel:${phone_number}" style="color:purple">${phone_number}</a>`
 
         if (bus == ''){
             document.getElementById('bus').innerText = "전화 문의";
