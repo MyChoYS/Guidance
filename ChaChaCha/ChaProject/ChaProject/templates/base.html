@@ -32,7 +32,27 @@
             text-shadow : 1px 1px 1px white;
         }
         */
+@import url('https://fonts.googleapis.com/css?family=Nanum+Brush+Script&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR:200,300,400,500,600,700,900&display=swap');
 
+
+    p {
+        font-size : 30px;
+        color : black;
+        font-family: 'Nanum Brush Script', cursive;
+    }
+
+    .teamname {
+        font-size : 30px;
+        color : black;
+        font-family: 'Nanum Brush Script', cursive;
+    }
+
+    .hashtag {
+         font-size : 20px;
+         color : black;
+         font-family: 'Nanum Brush Script', cursive
+    }
     </style>
 </head>
 <body>
@@ -51,24 +71,23 @@
             <div class="navbar-collapse" id="navbar-collapse">
                 <div class="site-header hidden-xs">
                     <a class="site-brand" href="{% url 'home' %}" title="">
-                        <img class="img-responsive site-logo" alt="" src="{% static 'images/yellowcar.png' %}" width="70" height="70">
-                        다함께 차차차
+                        <img class="img-responsive site-logo" alt="" src="{% static 'images/carcarcar.png' %}" width="170">
                     </a>
-                    <p> 팀 지도편달 </p>
+                    <p class = "teamname"> 팀 지도편달 </p>
                 </div>
                 <br>
                 <br>
-                <br>
                 <ul class="nav" style=" line-height: 2.5em;">
-                    <li><a href="{% url 'home' %}" title="">홈으로</a></li>
+                    <li><a href="{% url 'home' %}" title="">홈</a></li>
                     <li><a href="{% url 'information' %}" title="">운전면허 시험 정보</a></li>
                     <li><a href="{% url 'services1' %}" title="">지역별 학원 검색</a></li>
                     <li><a href="{% url 'services2' %}" title="">내 주변 학원</a></li>
                     <li><a href="{% url 'services3' %}" title="">내 주변 시험장</a></li>
                     <li><a href="{% url 'review' %}" title="">학원/시험장 후기</a></li>
                 </ul>
-
                 <nav class="nav-footer">
+                     <!--
+
                     <p class="nav-footer-social-buttons">
                         <a class="fa-icon" href="https://www.instagram.com/" title="">
                             <i class="fa fa-instagram"></i>
@@ -80,7 +99,9 @@
                             <i class="fa fa-twitter"></i>
                         </a>
                     </p>
-                    <p># Awesome # 지도편달</p>
+                            -->
+
+                    <p class="hashtag">#Awesome #지도편달</p>
                 </nav>
             </div>
         </nav>
