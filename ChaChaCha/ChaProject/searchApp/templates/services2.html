@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 {% block headcontent %}
-<title>🚗내 주변 학원 🚘</title>
+<title>🚗내 주변 학원🚘</title>
 {% endblock %}
 
 {% block content %}
 {% load static %}
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Nanum+Brush+Script&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR:200,300,400,500,600,700,900&display=swap');
+
+    h4 {
+        text-align:center;
+        }
+
     h3, h6 {
         text-align : center;
     }
@@ -81,7 +88,7 @@
             <a href="javascript:;" class="btn_comm btn_resetMap" onclick="resetKakaoMap()"></a> <!-- 지도 초기화 버튼입니다 -->
             </div>
         </div>
-        <h3>&#128661 내 위치 기준의 주변학원입니다 &#128661</h3>
+        <h4> 내 위치 기준의 주변학원 </h4>
         <hr>
         <h6>마커를 클릭하시면 학원정보 & 수강료 정보를 확인할 수 있습니다.</h6>
     </div>
@@ -159,7 +166,7 @@
     var geocoder = new kakao.maps.services.Geocoder();
 
     // 마커 이미지 변경
-    var imageSrc = "/static/images/academymarker.png";
+    var imageSrc = "/static/images/academymarker2.png";
 
 
     // 마커 이미지의 이미지 크기 입니다
