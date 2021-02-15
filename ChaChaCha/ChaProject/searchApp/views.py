@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-
 from searchApp.models import Academy, Academy_town, TestSite
+from bbsApp.models import Academy_review
 
 # 학원 검색
 def services1(request) : #학원검색 첫 화면
@@ -43,8 +43,10 @@ def services1_search(request,city,town,name): #학원내용 출력
 # 내 주변 학원 검색 (맵)
 def services2(request) :
     mylocation = Academy.objects.all()
+    academyReview = Academy_review.objects.all()
     context = {
         'Academy':mylocation,
+        "academyReview": academyReview,
     }
     return render(request, 'services2.html', context)
 
