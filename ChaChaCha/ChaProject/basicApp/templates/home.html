@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% block css %}
 
+{% endblock %}
 {% block headcontent %}
 <title>다함께 차차차</title>
 {% endblock %}
@@ -11,13 +13,30 @@
 
 <main class="" id="main-collapse">
 <!-- Add your site or app content here -->
-  <div class="hero-full-wrapper">
-    <div class="grid">
-      <div class="gutter-sizer"></div>
-      <div class="grid-sizer"></div>
 
+  <div class="hero-full-wrapper">
+    <img class="img-responsive" alt="" src="{% static 'images/4.png' %}" width="100%" style="border-radius: 100px;  overflow: hidden;">
+  </div>
+  <br>
+  <div class="row">
+    <div class="hero-full-wrapper" style="text-align:center;">
+      <a href="https://github.com/he-reme"><img alt="" src="{% static 'images/github1.png' %}" width="30px"></a>
+      <a href="https://github.com/sanghyun-an"><img alt="" src="{% static 'images/github2.png' %}" width="30px"></a>
+      <a href="https://github.com/MyChoYS"><img alt="" src="{% static 'images/github3.png' %}" width="30px"></a>
+      <a href="https://github.com/so02e"><img alt="" src="{% static 'images/github4.png' %}" width="30px"></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="hero-full-wrapper" style="text-align:center;">
+      <h3>야, 너도 할 수 있어</h3>
+      <p>뚱이도 따는데</p>
+    </div>
+  </div>
+
+
+    <!--
       <div class="grid-item">
-        <img class="img-responsive" alt="" src="{% static 'images/img-12.jpg' %}">
+        <img class="img-responsive" alt="" src="{% static 'images/1.jpg' %}">
         <a href="https://github.com/he-reme" class="project-description">
           <div class="project-text-holder">
             <div class="project-text-inner">
@@ -28,20 +47,9 @@
         </a>
       </div>
 
-      <div class="grid-item">
-        <img class="img-responsive" alt="" src="{% static 'images/img-05.jpg' %}">
-        <a href="{% url 'contact' %}" class="project-description">
-          <div class="project-text-holder">
-            <div class="project-text-inner">
-              <h3>다함께 차차차</h3>
-              <p>후원 하기</p>
-            </div>
-          </div>
-        </a>
-      </div>
 
       <div class="grid-item">
-        <img class="img-responsive" alt="" src="{% static 'images/img-13.jpg' %}">
+        <img class="img-responsive" alt="" src="{% static 'images/4.png' %}">
         <a href="https://github.com/sanghyun-an" class="project-description">
           <div class="project-text-holder">
             <div class="project-text-inner">
@@ -52,20 +60,10 @@
         </a>
       </div>
 
-      <div class="grid-item">
-        <img class="img-responsive" alt="" src="{% static 'images/img-04.jpg' %}">
-        <a href="https://github.com/so02e" class="project-description">
-          <div class="project-text-holder">
-            <div class="project-text-inner">
-              <h3>장소영</h3>
-              <p>so02e</p>
-            </div>
-          </div>
-        </a>
-      </div>
+
 
       <div class="grid-item">
-        <img class="img-responsive" alt="" src="{% static 'images/img-07.jpg' %}">
+        <img class="img-responsive" alt="" src="{% static 'images/6.jpg' %}">
         <a href="https://github.com/MyChoYS" class="project-description">
           <div class="project-text-holder">
             <div class="project-text-inner">
@@ -77,6 +75,18 @@
       </div>
     </div>
   </div>
+  <div class="grid-item">
+    <img class="img-responsive" alt="" src="{% static 'images/2.jpg' %}">
+      <a href="https://github.com/so02e" class="project-description">
+        <div class="project-text-holder">
+          <div class="project-text-inner">
+            <h3>장소영</h3>
+            <p>so02e</p>
+          </div>
+        </div>
+      </a>
+       -->
+
 
   <script>
     document.addEventListener("DOMContentLoaded", function (event) {

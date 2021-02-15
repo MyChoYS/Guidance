@@ -5,9 +5,6 @@ from django.template import loader
 def home(request):
     return render(request, 'home.html', None)
 
-def contact(request) :
-    return render(request, 'contact.html', None)
-
 def information(request) :
     return render(request, 'information.html', None)
 
