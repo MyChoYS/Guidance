@@ -8,17 +8,6 @@ from django.http import  JsonResponse
 from django.http import HttpResponse
 from django.template import loader
 
-# 처음 리뷰 게시판 들어갔을 때, academy 정보 먼저 보여줌
-def review(request) :
-    page = request.GET.get('page', 1)
-
-    academyReview = Academy_review.objects.all()
-    reviewPaginator = Paginator(academyReview, 5)
-    reviewlistpage = reviewPaginator.get_page(page)
-
-    context = {"academyReview": reviewlistpage}
-    return render(request, 'review.html', context)
-
 # 학원 리뷰 보기
 def review_academy(request):
     page = request.GET.get('page', 1)
@@ -170,3 +159,12 @@ def get_testsite_name(request):
         nameList.append(t.name)
     return JsonResponse({"nameList": nameList})
 
+def get_academy_password(request):
+    pk = request.GET['pk']
+    review = Academy_review.objects.get(pk=pk)
+    return JsonResponse({"result": review.password})
+
+def get_testsite_password(request):
+    pk = request.GET['pk']
+    review = TestSite_review.objects.get(pk=pk)
+    return JsonResponse({"result": review.password})
