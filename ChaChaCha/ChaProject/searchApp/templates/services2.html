@@ -90,7 +90,9 @@
         </div>
         <h4> 내 위치 기준의 주변학원 </h4>
         <hr>
-        <h6>마커를 클릭하시면 학원정보 & 수강료 정보를 확인할 수 있습니다.</h6>
+        <h6>마커의 하단 부분을 클릭하시면 학원정보 & 수강료 정보를 확인할 수 있습니다.</h6>
+        <h6>학원명을 클릭하시면 사이트로 이동합니다.</h6>
+
     </div>
 
   <div class="col-xs-12 col-md-6">
@@ -170,24 +172,23 @@
 
 
     // 마커 이미지의 이미지 크기 입니다
-    var imageSize = new kakao.maps.Size(40,40);
+    var imageSize = new kakao.maps.Size(64,69);
+    var imageOption = {offset: new kakao.maps.Point(27, 69)};
 
     // 마커 이미지를 생성합니다
-    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
     {% for location in Academy %}
     geocoder.addressSearch('{{location.address_full}}', function(result, status) {
 
     // 정상적으로 검색이 완료됐으면
      if (status === kakao.maps.services.Status.OK) {
-
         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
         var marker = new kakao.maps.Marker({
             map: map, // 마커를 표시할 지도
-            position: coords,
+            position: coords, // 마커 위치
             title : '{{location.name}}', // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                    image : markerImage // 마커 이미지
+            image : markerImage // 마커 이미지
             });
 
         // 커스텀 오버레이에 표출될 내용을 설정합니다.
@@ -205,6 +206,7 @@
             map: map,
             position: position,
             content: content,
+            yAnchor : 1.2
             });
 
     // 이벤트 리스너
