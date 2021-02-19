@@ -65,10 +65,12 @@
 
     .customoverlay {position:relative;bottom:60px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
     .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-    .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background:#e6b800;background:#e6b800 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
-    .customoverlay .title {display:block;text-align:center;background:#fff;margin-right:30px;padding:10px 15px;font-size:14px;font-weight:bold;}
-    .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+    .customoverlay a
 
+    .wrap {position: absolute;left: 0;bottom: 60px;width: 188px;height: 60px;margin-left: -144px;text-align: left;overflow: hidden;}
+    .wrap .title {display:block;text-align:center;background:#fff;font-size:15px;font-weight:bold;}
+    .wrap .info:nth-child(1) {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d3d3d3;}
+    .wrap:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
 
 </style>
 
@@ -123,7 +125,7 @@
 
 </main>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1cc2187c8717ffab77eb12ceab5806ae&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9232eea87d1d6eb902f1f880831aaf74&libraries=services"></script>
 <script>
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapCenter = new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심 좌표
@@ -131,7 +133,7 @@
             center: mapCenter,
             minLevel: 3, // 최소 레벨
             maxLevel : 8, // 최대 레벨
-            level: 8 // 지도의 확대 레벨
+            level: 7 // 지도의 확대 레벨
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -172,8 +174,8 @@
 
 
     // 마커 이미지의 이미지 크기 입니다
-    var imageSize = new kakao.maps.Size(64,69);
-    var imageOption = {offset: new kakao.maps.Point(27, 69)};
+    var imageSize = new kakao.maps.Size(42,42);
+    var imageOption = {offset: new kakao.maps.Point(23, 44)};
 
     // 마커 이미지를 생성합니다
     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
@@ -191,12 +193,21 @@
             image : markerImage // 마커 이미지
             });
 
+
         // 커스텀 오버레이에 표출될 내용을 설정합니다.
-        var content = '<div class="customoverlay">' +
-        '  <a href="{{location.url}}" target="_blank">' +
-        '  <span class="title">{{location.name}} 운전전문학원</span>' +
-        '  </a>' +
-        '</div>';
+        var content = '<div class="wrap">' +
+            '    <div class="info">' +
+            '        <div class="title">' +
+            '            {{location.name}} 운전전문학원' +
+            '        </div>' +
+            '        <div class="body">' +
+            '            <div class="desc">' +
+            '                <div><a href="{{location.url}}" target="_blank" class="link">홈페이지</a></div>' +
+            '            </div>' +
+            '        </div>' +
+            '    </div>' +
+            '</div>';
+
 
         // 커스텀 오버레이의 위치를 설정합니다
         var position = new kakao.maps.LatLng(result[0].y, result[0].x);
@@ -206,7 +217,7 @@
             map: map,
             position: position,
             content: content,
-            yAnchor : 1.2
+            yAnchor: 2.0
             });
 
     // 이벤트 리스너
