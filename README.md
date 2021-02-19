@@ -11,6 +11,5 @@
 * Django
 * SQLite
 
-
-
-날읽어줘제발
+## 서버 호스팅
+`https://chachacha.pythonanywhere.com/`
