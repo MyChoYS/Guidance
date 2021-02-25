@@ -34,33 +34,34 @@
 
   <form method="POST" action="{% url 'update_academy2' review.pk %}" >
     {% csrf_token %}
-      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+    <div class="row">
+      <div class="col-lg-2 col-md-3 col-sm-12 p-0">
         <select id="a_city" class="form-control" onchange="getTown(this.value)" name="a_city" required>
-          <option value="none">=== 선택 ===</option>
+          <option value="none">시/도</option>
           <option value="서울">서울</option>
           <option value="인천">인천</option>
           <option value="경기">경기</option>
         </select>
        </div>
-      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+      <div class="col-lg-2 col-md-3 col-sm-12 p-0">
         <select id="a_town" class="form-control" onchange="getName(this.value)" name="a_town" required>
-          <option value="none">=== 선택 ===</option>
+          <option value="none">시/구/군</option>
         </select>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-12 p-0" id="name">
+      <div class="col-lg-2 col-md-3 col-sm-12 p-0" id="name">
         <select id="a_name" class="form-control" name="a_name" required>
-          <option value="none">=== 선택 ===</option>
+          <option value="none">학원명</option>
         </select>
       </div>
+    </div>
       <br>
-      <br>
-      <br>
+
       <label for="InputTitle">제목</label>
-      <input type="text" class="form-control" id="InputTitle" name="title" placeholder="title" value="{{ review.title }}" required><br>
+      <input type="text" class="form-control" id="InputTitle" name="title" placeholder="title" value="{{ review.title }}" style="width:800px" required><br>
       <label for="InputContent">내용</label>
-      <textarea id="InputContent" class="form-control" rows="3" name="content" placeholder="content" required>{{ review.content }}</textarea><br>
+      <textarea id="InputContent" class="form-control" rows="3" name="content" placeholder="content" style="width:800px" required>{{ review.content }}</textarea><br>
       <label for="InputPassword">비밀번호</label>
-      <input type="password" class="form-control" id="InputPassword" name="password" placeholder="password" required><br>
+      <input type="password" class="form-control" id="InputPassword" name="password" placeholder="password" style="width:800px" required><br>
       {% if msg %}
       <div class="alert alert-danger" role="alert">{{ msg }}</div>
       {% endif %}

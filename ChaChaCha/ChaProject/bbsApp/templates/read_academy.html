@@ -22,36 +22,48 @@
             <hr>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-8 section-container-spacer" style=" height:50px; border-radius:10px; padding:5px; background-color:#808080; text-align:center;">
+            <h4 style="font-weight: bold; color:white;">{{ review.title }}</h4>
+        </div>
+    </div>
     <div class="row" >
-        <div class="col-xs-12 col-md-4 section-container-spacer">
-            <h3>학원</h3>
-            <blockquote>
-                <h5>{{ review.academy_id.address_city }}(시/도)</h5>
-                <h5>{{ review.academy_id.address_town }}(시/구/군)</h5>
-                <h5>{{ review.academy_id.name }}(학원)</h5>
-            </blockquote>
+        <div class="col-xs-8 section-container-spacer" style="align:center;">
+            <div class="col-xs-4 section-container-spacer" style="padding:5px;">
+                <h4>학원</h4>
+                <div class="hero-full-wrapper" style="background-color:#F3F3F3; height:50px; border-radius:10px; padding:5px; text-align:center;">
+                    <h5>{{ review.academy_id.name }}</h5>
+                </div>
+            </div>
+
+            <div class="col-xs-4 section-container-spacer" style="padding:5px;">
+                <h4>시/도</h4>
+                <div class="hero-full-wrapper" style="background-color:#F3F3F3; height:50px; border-radius:10px; padding:5px; text-align:center;">
+                    <h5>{{ review.academy_id.address_city }}</h5>
+                </div>
+            </div>
+            <div class="col-xs-4 section-container-spacer" style="padding:5px;">
+                <h4>시/구/군</h4>
+                <div class="hero-full-wrapper" style="background-color:#F3F3F3; height:50px; border-radius:10px; padding:5px; text-align:center;">
+                    <h5>{{ review.academy_id.address_town }}</h5>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-12 col-md-4 section-container-spacer">
-            <h3>제목</h3>
-            <blockquote>
-                <h5>{{ review.title }}</h5>
-            </blockquote>
-        </div>
-        <div class="col-xs-12 col-md-4 section-container-spacer">
-            <h3>내용</h3>
-            <blockquote>
-                <h5>{{ review.content }}</h5>
-            </blockquote>
+    </div>
+    <div class="row">
+        <h4>내용</h4>
+        <div class="col-xs-8 section-container-spacer" style="background-color:#F3F3F3; height:200px;border-radius:10px; padding:20px;">
+            <h5 style="margin:20px;">{{ review.content }}</h5>
         </div>
     </div>
     <br>
     <div class="row">
-        <div class="col-xs-12 col-md-4 section-container-spacer">
+        <div class="col-xs-8 col-md-4 section-container-spacer">
         </div>
-        <div class="col-xs-12 col-md-4 section-container-spacer">
+        <div class="col-xs-8 col-md-4 section-container-spacer" style="text-align: right">
             <a href="{% url 'review_academy' %}" class="btn btn-primary" title=""> 뒤로가기 </a>
         </div>
-        <div class="col-xs-12 col-md-4 section-container-spacer">
+        <div class="col-xs-8 col-md-4 section-container-spacer">
         </div>
     </div>
 </main>
